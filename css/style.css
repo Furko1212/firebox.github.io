@@ -315,8 +315,10 @@ hr {
       linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
       url(../img/firebox-bg.jpg) no-repeat center center;
     background-size: cover;
-    height: auto;
+    background-attachment: fixed;
+    min-height: 100vh;
 }
+
 
 
 #intro.intro {
@@ -837,3 +839,4 @@ Parallax
 	
 
 }
+
