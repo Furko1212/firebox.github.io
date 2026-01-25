@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="Shortcut Icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="img/favicon.ico">
 
     <title>FireboxMC</title>
 
@@ -12,46 +12,53 @@
     <link href="css/animate.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="color/default.css" rel="stylesheet">
+
+    <style>
+        .skin-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #111;
+            padding: 8px;
+        }
+    </style>
 </head>
 
-<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
+<body id="page-top">
 
-<!-- NAVBAR -->
 <nav class="navbar navbar-custom navbar-fixed-top">
     <div class="container">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#intro">
-                <h1>
-                    <span style="color:#ffaa00;">Fire</span><span style="color:#ff3333;">box</span>
-                    - IP : play.fireboxx.xyz
-                </h1>
-            </a>
-        </div>
-
-        <div class="collapse navbar-collapse navbar-right">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#intro">Ana Sayfa</a></li>
-                <li><a href="#about">Hakkımızda</a></li>
-                <li><a href="#service">Özellikler</a></li>
-                <li><a href="#contact">İletişim</a></li>
-                <li><a href="#" onclick="alert('Market yakında aktif edilecek!')">Market</a></li>
-            </ul>
-        </div>
+        <a class="navbar-brand" href="#intro">
+            <h1>
+                <span style="color:#ffaa00;">Fire</span><span style="color:#ff3333;">box</span>
+                - IP : play.fireboxx.xyz
+            </h1>
+        </a>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="#intro">Ana Sayfa</a></li>
+            <li><a href="#about">Hakkımızda</a></li>
+            <li><a href="#service">Özellikler</a></li>
+            <li><a href="#contact">İletişim</a></li>
+            <li><a href="#">Market (Yakında)</a></li>
+        </ul>
     </div>
 </nav>
 
-<!-- INTRO -->
-<section id="intro" class="intro">
-    <div class="slogan">
+<section id="intro" class="intro"
+style="
+background:
+linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+url(img/firebox-bg.jpg) no-repeat center center;
+background-size: cover;
+">
+    <div class="slogan text-center">
         <h2>
-            <span style="color:#ffaa00;">Fire</span><span style="color:#ff3333;">box</span>
-            Hoşgeldin.
+            <span style="color:#ffaa00;">Fire</span><span style="color:#ff3333;">box</span> Hoşgeldin
         </h2>
         <h4>Sunucu Adresi : play.fireboxx.xyz</h4>
     </div>
 </section>
 
-<!-- ABOUT -->
 <section id="about" class="home-section text-center">
     <div class="container">
         <h2>Hakkımızda</h2>
@@ -59,36 +66,28 @@
 
         <div class="row">
 
-            <!-- FURKO1212 (RESİMLİ) -->
-            <div class="col-md-3 text-center">
-                <img src="img/team/sa.png" class="skin-circle founder" alt="Furko1212">
+            <div class="col-md-4">
+                <img src="img/team/furko.png" class="skin-circle" alt="Furko1212">
                 <h4>Furko1212</h4>
                 <p>Kurucu</p>
             </div>
 
-            <!-- KLOROPLASTMETALI (RESİMLİ) -->
-            <div class="col-md-3 text-center">
-                <img src="img/team/as.png" class="skin-circle" alt="kloroplastmetali">
+            <div class="col-md-4">
+                <img src="img/team/sa.png" class="skin-circle" alt="kloroplastmetali">
                 <h4>kloroplastmetali</h4>
                 <p>Kurucu</p>
             </div>
 
-            <!-- DİĞERLERİ RESİMSİZ -->
-            <div class="col-md-3">
+            <div class="col-md-4">
+                <img src="img/team/ali.png" class="skin-circle" alt="SensinOBro">
                 <h4>SensinOBro</h4>
                 <p>Admin</p>
-            </div>
-
-            <div class="col-md-3">
-                <h4>RealForHype</h4>
-                <p>Moderatör</p>
             </div>
 
         </div>
     </div>
 </section>
 
-<!-- SERVICES -->
 <section id="service" class="home-section text-center bg-gray">
     <div class="container">
         <h2>Özellikler</h2>
@@ -96,40 +95,37 @@
         <div class="row">
             <div class="col-md-3">
                 <h4>Harita</h4>
-                <p>Boxmining için en iyi yapılar.</p>
-            </div>
-            <div class="col-md-3">
-                <h4>Özel Menüler</h4>
-                <p>Kit, warp ve market menüleri.</p>
+                <p>Boxmining için özel yapılar</p>
             </div>
             <div class="col-md-3">
                 <h4>Etkinlikler</h4>
-                <p>Her gün Kit Kasa Event!</p>
+                <p>Her gün Kasa & Kit Event</p>
             </div>
             <div class="col-md-3">
                 <h4>Pixeller</h4>
-                <p>En eğlenceli deneyim için şart :)</p>
+                <p>En eğlenceli oyun deneyimi</p>
+            </div>
+            <div class="col-md-3">
+                <h4>Market</h4>
+                <p>Yakında aktif</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- CONTACT -->
 <section id="contact" class="home-section text-center">
     <div class="container">
         <h2>İletişim</h2>
-        <p>E-Posta: <a href="mailto:yasintamtak@gmail.com">yasintamtak@gmail.com</a></p>
+        <p>E-Posta: yasintamtak@gmail.com</p>
         <p>IP: play.fireboxx.xyz</p>
     </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="text-center">
     <p>© FireboxMC - Tüm Hakları Saklıdır</p>
 </footer>
 
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-
 </body>
 </html>
