@@ -309,12 +309,15 @@ hr {
 ============================ */
 
 .intro {
-	width:100%;
-	position:relative;
-	background: url(../img/bg1.jpg) no-repeat top center;
+    width:100%;
+    position:relative;
+    background:
+      linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+      url(../img/firebox-bg.jpg) no-repeat center center;
     background-size: cover;
     height: auto;
 }
+
 
 #intro.intro {
 	padding:20% 0 0 0;
@@ -832,4 +835,5 @@ Parallax
 		font-size: 20px;
 	}
 	
+
 }
