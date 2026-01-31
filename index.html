@@ -6,199 +6,188 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-* {
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#050505;color:white}
 
-body {
-  margin: 0;
-  background: #0b0b0b;
-  color: white;
+/* LANDING */
+#landing{
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  background:#050505;
 }
-
-/* LOGIN */
-#authBox {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+#landing img{
+  width:260px;
+  margin-bottom:30px;
 }
-
-.auth-card {
-  background: #111;
-  border: 2px solid #ff8c00;
-  padding: 30px;
-  width: 320px;
-  border-radius: 12px;
-  text-align: center;
+#enterBtn{
+  background:#ff8c00;
+  color:black;
+  padding:14px 40px;
+  border:none;
+  font-size:18px;
+  font-weight:bold;
+  border-radius:8px;
+  cursor:pointer;
 }
+#enterBtn:hover{opacity:.9}
 
-.auth-card h2 {
-  color: #ff8c00;
+/* AUTH */
+#authBox{
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
 }
-
-.auth-card input {
-  width: 100%;
-  padding: 12px;
-  margin: 8px 0;
-  background: #000;
-  border: 1px solid #ff8c00;
-  color: white;
-  border-radius: 6px;
+.auth-card{
+  background:#0e0e0e;
+  border:2px solid #ff8c00;
+  padding:30px;
+  width:320px;
+  border-radius:14px;
+  text-align:center;
 }
-
-.auth-card button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  background: #ff8c00;
-  color: black;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.auth-card h2{color:#ff8c00}
+.auth-card input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  background:black;
+  border:1px solid #ff8c00;
+  color:white;
+  border-radius:6px;
 }
-
-.auth-card button:hover {
-  opacity: 0.9;
+.auth-card button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  background:#ff8c00;
+  color:black;
+  font-weight:bold;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
 }
-
-.switch {
-  margin-top: 10px;
-  font-size: 14px;
-  cursor: pointer;
-  color: #ffb347;
+.switch{
+  margin-top:10px;
+  color:#ffb347;
+  cursor:pointer;
 }
 
 /* SITE */
-#site {
-  display: none;
+#site{
+  display:none;
 }
-
-header {
-  background: black;
-  border-bottom: 2px solid #ff8c00;
-  padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+header{
+  background:black;
+  border-bottom:2px solid #ff8c00;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
-
-.logout {
-  background: #ff8c00;
-  color: black;
-  border: none;
-  padding: 8px 14px;
-  border-radius: 6px;
-  cursor: pointer;
+.logout{
+  background:#ff8c00;
+  border:none;
+  padding:8px 16px;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
 }
-
-main {
-  padding: 30px;
-}
+main{padding:40px}
 </style>
 </head>
 
 <body>
 
-<!-- LOGIN -->
+<!-- LANDING -->
+<div id="landing">
+  <!-- LOGO -->
+  <img src="firebox.png" alt="Firebox Logo">
+  <button id="enterBtn">ENTER</button>
+</div>
+
+<!-- AUTH -->
 <div id="authBox">
   <div class="auth-card">
     <h2 id="title">Giriş Yap</h2>
-
     <input id="email" type="email" placeholder="Email">
     <input id="password" type="password" placeholder="Şifre">
-
     <button id="actionBtn">Giriş Yap</button>
-
-    <div class="switch" id="switchMode">
-      Hesabın yok mu? Kayıt ol
-    </div>
+    <div class="switch" id="switchMode">Hesabın yok mu? Kayıt ol</div>
   </div>
 </div>
 
 <!-- SITE -->
 <div id="site">
   <header>
-    <h3>🔥 Firebox Panel</h3>
-    <button class="logout" id="logoutBtn">Çıkış Yap</button>
+    <h3>Firebox</h3>
+    <button class="logout" id="logoutBtn">Çıkış</button>
   </header>
-
   <main>
-    <h1>Hoş geldin knk 👋</h1>
-    <p>Burası ana site. Login olmadan girilemez.</p>
+    <!-- BURAYA SİTENİN ASIL İÇERİĞİ GELECEK -->
   </main>
 </div>
 
-<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
-  authDomain: "firebox-e62b3.firebaseapp.com",
-  projectId: "firebox-e62b3",
-  storageBucket: "firebox-e62b3.firebasestorage.app",
-  messagingSenderId: "1063315808941",
-  appId: "1:1063315808941:web:30eff721cf4a01e7945c24",
-  measurementId: "G-ZKH1QJC3N2"
+const firebaseConfig={
+  apiKey:"AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
+  authDomain:"firebox-e62b3.firebaseapp.com",
+  projectId:"firebox-e62b3",
+  storageBucket:"firebox-e62b3.firebasestorage.app",
+  messagingSenderId:"1063315808941",
+  appId:"1:1063315808941:web:30eff721cf4a01e7945c24"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
 
-const authBox = document.getElementById("authBox");
-const site = document.getElementById("site");
-const actionBtn = document.getElementById("actionBtn");
-const switchMode = document.getElementById("switchMode");
-const title = document.getElementById("title");
+const landing=document.getElementById("landing");
+const authBox=document.getElementById("authBox");
+const site=document.getElementById("site");
 
-let isLogin = true;
-
-switchMode.onclick = () => {
-  isLogin = !isLogin;
-  title.innerText = isLogin ? "Giriş Yap" : "Kayıt Ol";
-  actionBtn.innerText = isLogin ? "Giriş Yap" : "Kayıt Ol";
-  switchMode.innerText = isLogin ? "Hesabın yok mu? Kayıt ol" : "Zaten hesabın var mı? Giriş yap";
+document.getElementById("enterBtn").onclick=()=>{
+  landing.style.display="none";
+  authBox.style.display="flex";
 };
 
-actionBtn.onclick = authAction;
+let isLogin=true;
+const title=document.getElementById("title");
+const actionBtn=document.getElementById("actionBtn");
+const switchMode=document.getElementById("switchMode");
 
-document.addEventListener("keydown", e => {
-  if (e.key === "Enter") authAction();
-});
+switchMode.onclick=()=>{
+  isLogin=!isLogin;
+  title.innerText=isLogin?"Giriş Yap":"Kayıt Ol";
+  actionBtn.innerText=isLogin?"Giriş Yap":"Kayıt Ol";
+  switchMode.innerText=isLogin?"Hesabın yok mu? Kayıt ol":"Zaten hesabın var mı? Giriş yap";
+};
 
-function authAction() {
-  const email = email.value;
-  const password = password.value;
+function authAction(){
+  const email=document.getElementById("email").value;
+  const password=document.getElementById("password").value;
+  if(!email||!password)return alert("Boş bırakma");
 
-  if (!email || !password) return alert("Boş bırakma knk");
-
-  if (isLogin) {
-    signInWithEmailAndPassword(auth, email, password)
-      .catch(err => alert(err.message));
-  } else {
-    createUserWithEmailAndPassword(auth, email, password)
-      .catch(err => alert(err.message));
-  }
+  isLogin
+  ? signInWithEmailAndPassword(auth,email,password)
+  : createUserWithEmailAndPassword(auth,email,password);
 }
 
-onAuthStateChanged(auth, user => {
-  if (user) {
-    authBox.style.display = "none";
-    site.style.display = "block";
-  } else {
-    authBox.style.display = "flex";
-    site.style.display = "none";
+actionBtn.onclick=authAction;
+document.addEventListener("keydown",e=>{if(e.key==="Enter")authAction()});
+
+onAuthStateChanged(auth,user=>{
+  if(user){
+    authBox.style.display="none";
+    site.style.display="block";
+  }else{
+    site.style.display="none";
   }
 });
 
-document.getElementById("logoutBtn").onclick = () => {
-  signOut(auth);
-};
-</script>
-
-</body>
-</html>
+document.getElementById("logoutBtn").onclick=()=
