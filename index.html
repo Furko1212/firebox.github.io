@@ -22,10 +22,11 @@ const auth = firebase.auth();
 body{
   margin:0;
   font-family:Arial, sans-serif;
-  background:#0f0f0f;
-  color:#fff;
+  background:radial-gradient(circle at top,#1a1a1a,#000);
+  color:white;
 }
 
+/* LOGIN */
 #login, #site{
   min-height:100vh;
   display:none;
@@ -34,36 +35,57 @@ body{
 }
 
 #login-box{
-  width:360px;
-  background:#111;
-  padding:30px;
-  border-radius:14px;
+  width:380px;
+  background:#0b0b0b;
+  padding:32px;
+  border-radius:18px;
+  box-shadow:0 0 35px rgba(255,140,0,0.35);
 }
 
-input, button{
+.logo{
+  text-align:center;
+  margin-bottom:15px;
+}
+.logo img{
+  width:120px;
+}
+
+/* INPUTS */
+input{
   width:100%;
   padding:12px;
-  margin-bottom:10px;
+  margin-bottom:12px;
   border:none;
   border-radius:8px;
-}
-
-input{
   background:#1e1e1e;
   color:white;
+  font-size:15px;
 }
+input::placeholder{color:#aaa}
 
+/* BUTTON */
 button{
-  background:#ff3333;
+  width:100%;
+  padding:12px;
+  background:linear-gradient(135deg,#ff8c00,#ff3300);
+  border:none;
+  border-radius:8px;
   color:white;
+  font-size:16px;
+  font-weight:bold;
   cursor:pointer;
+}
+button:hover{
+  background:linear-gradient(135deg,#ffaa00,#ff5500);
 }
 
 .switch{
   text-align:center;
+  margin-top:10px;
   color:#aaa;
   cursor:pointer;
 }
+.switch:hover{color:white}
 
 #error{
   color:#ff6666;
@@ -71,18 +93,26 @@ button{
   margin-bottom:10px;
 }
 
+/* SITE */
+#site{
+  flex-direction:column;
+}
+
 .nav{
   width:100%;
   position:fixed;
   top:0;
   left:0;
-  background:#111;
-  padding:15px;
+  background:#0b0b0b;
+  padding:15px 25px;
   display:flex;
   justify-content:space-between;
+  align-items:center;
+  box-shadow:0 0 15px rgba(255,140,0,.2);
 }
+
 .section{
-  padding-top:100px;
+  padding-top:120px;
   text-align:center;
 }
 </style>
@@ -90,13 +120,16 @@ button{
 
 <body>
 
-<!-- LOGIN -->
+<!-- 🔒 LOGIN -->
 <div id="login">
   <div id="login-box">
-    <h2 style="text-align:center">🔥 FireboxMC</h2>
+    <div class="logo">
+      <img src="img/logo.png" alt="Firebox Logo">
+    </div>
+
     <div id="error"></div>
 
-    <input id="email" placeholder="Email">
+    <input id="email" type="email" placeholder="Email">
     <input id="password" type="password" placeholder="Şifre">
     <input id="password2" type="password" placeholder="Şifre (Tekrar)" style="display:none">
 
@@ -107,33 +140,38 @@ button{
   </div>
 </div>
 
-<!-- SITE -->
+<!-- 🔓 SITE -->
 <div id="site">
   <div class="nav">
-    <strong>🔥 FireboxMC</strong>
-    <button id="logoutBtn">Çıkış Yap</button>
+    <strong>
+      <span style="color:#ffaa00">Fire</span><span style="color:#ff3333">box</span>MC
+    </strong>
+    <button id="logoutBtn" style="width:auto;padding:8px 16px;">Çıkış</button>
   </div>
 
   <div class="section">
     <h1>Hoşgeldin 🔥</h1>
     <p>IP: play.fireboxx.xyz</p>
+    <p>Türkiye’nin en iyi BoxMining sunucusu</p>
   </div>
 </div>
 
 <script>
 let isRegister=false;
 
-/* UI SWITCH */
+/* Switch */
 switchBtn.onclick=()=>{
   isRegister=!isRegister;
   password2.style.display=isRegister?"block":"none";
   loginBtn.style.display=isRegister?"none":"block";
   registerBtn.style.display=isRegister?"block":"none";
-  switchBtn.innerText=isRegister?"Zaten hesabın var mı? Giriş yap":"Hesabın yok mu? Kayıt ol";
+  switchBtn.innerText=isRegister
+    ?"Zaten hesabın var mı? Giriş yap"
+    :"Hesabın yok mu? Kayıt ol";
   error.innerText="";
 };
 
-/* REGISTER */
+/* Register */
 registerBtn.onclick=()=>{
   if(password.value!==password2.value){
     error.innerText="Şifreler uyuşmuyor";
@@ -142,32 +180,37 @@ registerBtn.onclick=()=>{
   auth.createUserWithEmailAndPassword(email.value,password.value)
   .then(u=>{
     u.user.sendEmailVerification();
-    alert("Mail doğrulandıktan sonra giriş yapabilirsin 📧");
+    alert("Mail doğrulama gönderildi 📧");
     auth.signOut();
   })
   .catch(e=>error.innerText=e.message);
 };
 
-/* LOGIN */
+/* Login */
 loginBtn.onclick=()=>{
   auth.signInWithEmailAndPassword(email.value,password.value)
   .catch(()=>error.innerText="Email veya şifre hatalı");
 };
 
-/* LOGOUT (NET & TEK) */
+/* Logout */
 logoutBtn.onclick=()=>{
-  auth.signOut().then(()=>{
-    site.style.display="none";
-    login.style.display="flex";
-  });
+  auth.signOut();
 };
 
-/* AUTH STATE — TEK SORUMLULUK */
+/* Enter = Giriş / Kayıt */
+document.addEventListener("keydown",e=>{
+  if(e.key==="Enter"){
+    isRegister ? registerBtn.click() : loginBtn.click();
+  }
+});
+
+/* Auth State */
 auth.onAuthStateChanged(user=>{
   if(user && user.emailVerified){
     login.style.display="none";
-    site.style.display="block";
+    site.style.display="flex";
   }else{
+    site.style.display="flex";
     site.style.display="none";
     login.style.display="flex";
   }
