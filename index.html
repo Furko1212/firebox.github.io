@@ -1,114 +1,180 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="utf-8">
-    <title>FireboxMC</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FireboxMC</title>
 
-    <!-- 🔐 FIREBASE AUTH KONTROL (EN ÜSTE) -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
-    <script>
-    firebase.initializeApp({
-      apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
-      authDomain: "firebox-e62b3.firebaseapp.com",
-      projectId: "firebox-e62b3"
-    });
-
-    firebase.auth().onAuthStateChanged(user=>{
-      if(!user || !user.emailVerified){
-        window.location.href="index.html";
-      }
-    });
-    </script>
-
-    <!-- CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-
-    <style>
-        .skin-circle {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: #111;
-            padding: 6px;
-        }
-    </style>
-</head>
-
-<body id="page-top">
-
-<nav class="navbar navbar-dark bg-dark">
-    <div class="container">
-        <span class="navbar-brand">
-            🔥 <span style="color:#ffaa00;">Fire</span><span style="color:#ff3333;">box</span>
-        </span>
-
-        <button onclick="logout()" class="btn btn-danger btn-sm">
-            Çıkış Yap
-        </button>
-    </div>
-</nav>
-
-<!-- INTRO -->
-<section style="
-height:90vh;
-background:
-linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
-url(img/firebox-bg.jpg) no-repeat center center;
-background-size:cover;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-color:white;
-">
-    <div>
-        <h1>
-            <span style="color:#ffaa00;">Fire</span><span style="color:#ff3333;">box</span>MC
-        </h1>
-        <h4>IP: play.fireboxx.xyz</h4>
-    </div>
-</section>
-
-<!-- ABOUT -->
-<section class="container text-center" style="padding:60px 0">
-    <h2>Hakkımızda</h2>
-    <p>Türkiye’nin En İyi BoxMining Sunucusu</p>
-
-    <div class="row">
-        <div class="col-md-4">
-            <img src="img/team/sa.png" class="skin-circle">
-            <h4>Furko1212</h4>
-            <p>Kurucu</p>
-        </div>
-
-        <div class="col-md-4">
-            <img src="img/team/as.png" class="skin-circle">
-            <h4>kloroplastmetali</h4>
-            <p>Kurucu</p>
-        </div>
-
-        <div class="col-md-4">
-            <img src="img/team/ali.png" class="skin-circle">
-            <h4>DroppedByMoney</h4>
-            <p>Moderatör</p>
-        </div>
-    </div>
-</section>
-
-<footer class="text-center" style="background:#111;color:#aaa;padding:20px">
-    © FireboxMC
-</footer>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <script>
-function logout(){
-    firebase.auth().signOut().then(()=>{
-        window.location.href="index.html";
-    });
+if (!firebase.apps.length) {
+  firebase.initializeApp({
+    apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
+    authDomain: "firebox-e62b3.firebaseapp.com",
+    projectId: "firebox-e62b3"
+  });
 }
+const auth = firebase.auth();
+</script>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background:#0f0f0f;
+    color:white;
+}
+
+/* LOGIN */
+#login{
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+#login-box{
+    width:380px;
+    background:#111;
+    padding:30px;
+    border-radius:15px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    margin-bottom:12px;
+    border:none;
+    border-radius:8px;
+    background:#1e1e1e;
+    color:white;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#ff3333;
+    border:none;
+    border-radius:8px;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{background:#ff5555}
+
+.switch{
+    text-align:center;
+    margin-top:10px;
+    color:#aaa;
+    cursor:pointer;
+}
+
+#error{
+    color:#ff5555;
+    text-align:center;
+    margin-bottom:10px;
+}
+
+/* SITE */
+#site{display:none}
+
+.nav{
+    background:#111;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.section{
+    padding:60px;
+    text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔒 LOGIN EKRANI -->
+<div id="login">
+  <div id="login-box">
+    <h2 style="text-align:center">🔥 FireboxMC</h2>
+    <div id="error"></div>
+
+    <input id="email" type="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Şifre">
+    <input id="password2" type="password" placeholder="Şifre (Tekrar)" style="display:none">
+
+    <button id="loginBtn" onclick="login()">Giriş Yap</button>
+    <button id="registerBtn" onclick="register()" style="display:none">Kayıt Ol</button>
+
+    <div class="switch" onclick="toggle()">Hesabın yok mu? Kayıt ol</div>
+  </div>
+</div>
+
+<!-- 🔓 ANA SITE -->
+<div id="site">
+  <div class="nav">
+    <h3><span style="color:#ffaa00">Fire</span><span style="color:#ff3333">box</span>MC</h3>
+    <button onclick="logout()">Çıkış</button>
+  </div>
+
+  <div class="section">
+    <h1>Hoşgeldin 🔥</h1>
+    <p>IP: play.fireboxx.xyz</p>
+    <p>Türkiye’nin en iyi BoxMining sunucusu</p>
+  </div>
+</div>
+
+<script>
+let isRegister=false;
+
+function toggle(){
+  isRegister=!isRegister;
+  password2.style.display=isRegister?"block":"none";
+  loginBtn.style.display=isRegister?"none":"block";
+  registerBtn.style.display=isRegister?"block":"none";
+  document.querySelector(".switch").innerText =
+    isRegister?"Zaten hesabın var mı? Giriş yap":"Hesabın yok mu? Kayıt ol";
+  error.innerText="";
+}
+
+function register(){
+  if(password.value!==password2.value){
+    error.innerText="Şifreler uyuşmuyor";
+    return;
+  }
+  auth.createUserWithEmailAndPassword(email.value,password.value)
+  .then(u=>{
+    u.user.sendEmailVerification();
+    alert("Mail doğrulama gönderildi 📧");
+    auth.signOut();
+  })
+  .catch(e=>error.innerText=e.message);
+}
+
+function login(){
+  auth.signInWithEmailAndPassword(email.value,password.value)
+  .catch(()=>error.innerText="Email veya şifre hatalı");
+}
+
+function logout(){
+  auth.signOut();
+}
+
+auth.onAuthStateChanged(user=>{
+  if(user && user.emailVerified){
+    login.style.display="none";
+    site.style.display="block";
+  }else{
+    login.style.display="flex";
+    site.style.display="none";
+  }
+});
 </script>
 
 </body>
