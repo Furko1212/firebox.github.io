@@ -10,140 +10,131 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <script>
-if (!firebase.apps.length) {
-  firebase.initializeApp({
-    apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
-    authDomain: "firebox-e62b3.firebaseapp.com",
-    projectId: "firebox-e62b3"
-  });
-}
+firebase.initializeApp({
+  apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
+  authDomain: "firebox-e62b3.firebaseapp.com",
+  projectId: "firebox-e62b3"
+});
 const auth = firebase.auth();
 </script>
 
 <style>
 body{
-    margin:0;
-    font-family: Arial, sans-serif;
-    background:#0f0f0f;
-    color:white;
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0f0f0f;
+  color:#fff;
 }
 
-/* LOGIN */
-#login{
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
+#login, #site{
+  min-height:100vh;
+  display:none;
+  align-items:center;
+  justify-content:center;
 }
 
 #login-box{
-    width:380px;
-    background:#111;
-    padding:30px;
-    border-radius:15px;
+  width:360px;
+  background:#111;
+  padding:30px;
+  border-radius:14px;
+}
+
+input, button{
+  width:100%;
+  padding:12px;
+  margin-bottom:10px;
+  border:none;
+  border-radius:8px;
 }
 
 input{
-    width:100%;
-    padding:12px;
-    margin-bottom:12px;
-    border:none;
-    border-radius:8px;
-    background:#1e1e1e;
-    color:white;
+  background:#1e1e1e;
+  color:white;
 }
 
 button{
-    width:100%;
-    padding:12px;
-    background:#ff3333;
-    border:none;
-    border-radius:8px;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
+  background:#ff3333;
+  color:white;
+  cursor:pointer;
 }
 
-button:hover{background:#ff5555}
-
 .switch{
-    text-align:center;
-    margin-top:10px;
-    color:#aaa;
-    cursor:pointer;
+  text-align:center;
+  color:#aaa;
+  cursor:pointer;
 }
 
 #error{
-    color:#ff5555;
-    text-align:center;
-    margin-bottom:10px;
+  color:#ff6666;
+  text-align:center;
+  margin-bottom:10px;
 }
-
-/* SITE */
-#site{display:none}
 
 .nav{
-    background:#111;
-    padding:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+  width:100%;
+  position:fixed;
+  top:0;
+  left:0;
+  background:#111;
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
 }
-
 .section{
-    padding:60px;
-    text-align:center;
+  padding-top:100px;
+  text-align:center;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🔒 LOGIN EKRANI -->
+<!-- LOGIN -->
 <div id="login">
   <div id="login-box">
     <h2 style="text-align:center">🔥 FireboxMC</h2>
     <div id="error"></div>
 
-    <input id="email" type="email" placeholder="Email">
+    <input id="email" placeholder="Email">
     <input id="password" type="password" placeholder="Şifre">
     <input id="password2" type="password" placeholder="Şifre (Tekrar)" style="display:none">
 
-    <button id="loginBtn" onclick="login()">Giriş Yap</button>
-    <button id="registerBtn" onclick="register()" style="display:none">Kayıt Ol</button>
+    <button id="loginBtn">Giriş Yap</button>
+    <button id="registerBtn" style="display:none">Kayıt Ol</button>
 
-    <div class="switch" onclick="toggle()">Hesabın yok mu? Kayıt ol</div>
+    <div class="switch" id="switchBtn">Hesabın yok mu? Kayıt ol</div>
   </div>
 </div>
 
-<!-- 🔓 ANA SITE -->
+<!-- SITE -->
 <div id="site">
   <div class="nav">
-    <h3><span style="color:#ffaa00">Fire</span><span style="color:#ff3333">box</span>MC</h3>
-    <button onclick="logout()">Çıkış</button>
+    <strong>🔥 FireboxMC</strong>
+    <button id="logoutBtn">Çıkış Yap</button>
   </div>
 
   <div class="section">
     <h1>Hoşgeldin 🔥</h1>
     <p>IP: play.fireboxx.xyz</p>
-    <p>Türkiye’nin en iyi BoxMining sunucusu</p>
   </div>
 </div>
 
 <script>
 let isRegister=false;
 
-function toggle(){
+/* UI SWITCH */
+switchBtn.onclick=()=>{
   isRegister=!isRegister;
   password2.style.display=isRegister?"block":"none";
   loginBtn.style.display=isRegister?"none":"block";
   registerBtn.style.display=isRegister?"block":"none";
-  document.querySelector(".switch").innerText =
-    isRegister?"Zaten hesabın var mı? Giriş yap":"Hesabın yok mu? Kayıt ol";
+  switchBtn.innerText=isRegister?"Zaten hesabın var mı? Giriş yap":"Hesabın yok mu? Kayıt ol";
   error.innerText="";
-}
+};
 
-function register(){
+/* REGISTER */
+registerBtn.onclick=()=>{
   if(password.value!==password2.value){
     error.innerText="Şifreler uyuşmuyor";
     return;
@@ -151,28 +142,34 @@ function register(){
   auth.createUserWithEmailAndPassword(email.value,password.value)
   .then(u=>{
     u.user.sendEmailVerification();
-    alert("Mail doğrulama gönderildi 📧");
+    alert("Mail doğrulandıktan sonra giriş yapabilirsin 📧");
     auth.signOut();
   })
   .catch(e=>error.innerText=e.message);
-}
+};
 
-function login(){
+/* LOGIN */
+loginBtn.onclick=()=>{
   auth.signInWithEmailAndPassword(email.value,password.value)
   .catch(()=>error.innerText="Email veya şifre hatalı");
-}
+};
 
-function logout(){
-  auth.signOut();
-}
+/* LOGOUT (NET & TEK) */
+logoutBtn.onclick=()=>{
+  auth.signOut().then(()=>{
+    site.style.display="none";
+    login.style.display="flex";
+  });
+};
 
+/* AUTH STATE — TEK SORUMLULUK */
 auth.onAuthStateChanged(user=>{
   if(user && user.emailVerified){
     login.style.display="none";
     site.style.display="block";
   }else{
-    login.style.display="flex";
     site.style.display="none";
+    login.style.display="flex";
   }
 });
 </script>
