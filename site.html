@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FireboxMC</title>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(135deg,#0b0b0b,#1a1a1a);
+    color:#fff;
+}
+
+/* 🔥 ÜST BAR */
+.topbar{
+    background:#0f0f0f;
+    padding:15px 30px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:2px solid #ff7a00;
+}
+
+.logo{
+    font-size:26px;
+    font-weight:bold;
+}
+.logo span{color:#ff7a00}
+
+.logout{
+    background:#ff7a00;
+    border:none;
+    padding:10px 18px;
+    border-radius:8px;
+    color:#000;
+    cursor:pointer;
+    font-weight:bold;
+}
+.logout:hover{background:#ff9a33}
+
+/* 🔥 CONTENT */
+.container{
+    padding:40px;
+    text-align:center;
+}
+
+.card{
+    background:#111;
+    padding:30px;
+    border-radius:15px;
+    max-width:800px;
+    margin:30px auto;
+    box-shadow:0 0 30px rgba(255,122,0,.2);
+}
+.card h2{color:#ff7a00}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <div class="logo"><span>Fire</span>boxMC</div>
+    <button class="logout" onclick="logout()">Çıkış Yap</button>
+</div>
+
+<div class="container">
+    <div class="card">
+        <h2>🔥 Hoş Geldin</h2>
+        <p>FireboxMC BoxMining sunucusuna giriş yaptın.</p>
+        <p><b>IP:</b> play.fireboxx.xyz</p>
+    </div>
+
+    <div class="card">
+        <h2>⚔️ Özellikler</h2>
+        <p>• Özel Box Haritaları</p>
+        <p>• Günlük Eventler</p>
+        <p>• Aktif Yetkili Ekibi</p>
+    </div>
+</div>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
+  authDomain: "firebox-e62b3.firebaseapp.com"
+});
+
+firebase.auth().onAuthStateChanged(user=>{
+  if(!user || !user.emailVerified){
+    location.href="index.html";
+  }
+});
+
+function logout(){
+  firebase.auth().signOut().then(()=>{
+    location.href="index.html";
+  });
+}
+</script>
+
+</body>
+</html>
