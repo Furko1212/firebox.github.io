@@ -11,7 +11,7 @@
 
 <script>
 firebase.initializeApp({
-  apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgkDve7EXoLlLbuE",
+  apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
   authDomain: "firebox-e62b3.firebaseapp.com",
   projectId: "firebox-e62b3"
 });
@@ -22,26 +22,26 @@ const auth = firebase.auth();
 *{box-sizing:border-box}
 body{
   margin:0;
-  font-family:Arial, sans-serif;
-  background:radial-gradient(circle at top,#1a1a1a,#000);
   height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:white;
+  background:radial-gradient(circle at top,#1a1a1a,#000);
+  font-family:Arial, sans-serif;
+  color:#fff;
 }
 
-#login-box{
+#box{
   width:380px;
   background:#0b0b0b;
   padding:32px;
   border-radius:18px;
-  box-shadow:0 0 35px rgba(255,140,0,0.35);
+  box-shadow:0 0 35px rgba(255,140,0,.35);
 }
 
 .logo{
   text-align:center;
-  margin-bottom:18px;
+  margin-bottom:20px;
 }
 .logo img{
   width:140px;
@@ -63,9 +63,9 @@ input::placeholder{color:#aaa}
 button{
   width:100%;
   padding:12px;
-  background:linear-gradient(135deg,#ff8c00,#ff3300);
   border:none;
   border-radius:8px;
+  background:linear-gradient(135deg,#ff8c00,#ff3300);
   color:white;
   font-size:16px;
   font-weight:bold;
@@ -81,7 +81,7 @@ button:hover{
   color:#aaa;
   cursor:pointer;
 }
-.switch:hover{color:white}
+.switch:hover{color:#fff}
 
 #error{
   color:#ff6666;
@@ -93,9 +93,9 @@ button:hover{
 
 <body>
 
-<div id="login-box">
+<div id="box">
   <div class="logo">
-    <img src="img/logo.png" alt="Firebox Logo">
+    <img src="img/logo.png" alt="Firebox">
   </div>
 
   <div id="error"></div>
@@ -113,7 +113,6 @@ button:hover{
 <script>
 let isRegister=false;
 
-/* Switch */
 switchBtn.onclick=()=>{
   isRegister=!isRegister;
   password2.style.display=isRegister?"block":"none";
@@ -125,7 +124,6 @@ switchBtn.onclick=()=>{
   error.innerText="";
 };
 
-/* Register */
 registerBtn.onclick=()=>{
   if(password.value!==password2.value){
     error.innerText="Şifreler uyuşmuyor";
@@ -134,13 +132,12 @@ registerBtn.onclick=()=>{
   auth.createUserWithEmailAndPassword(email.value,password.value)
   .then(u=>{
     u.user.sendEmailVerification();
-    alert("Mail doğrulama gönderildi 📧");
+    alert("Doğrulama maili gönderildi 📧");
     auth.signOut();
   })
   .catch(e=>error.innerText=e.message);
 };
 
-/* Login */
 loginBtn.onclick=()=>{
   auth.signInWithEmailAndPassword(email.value,password.value)
   .then(u=>{
@@ -154,7 +151,6 @@ loginBtn.onclick=()=>{
   .catch(()=>error.innerText="Email veya şifre hatalı");
 };
 
-/* Enter tuşu */
 document.addEventListener("keydown",e=>{
   if(e.key==="Enter"){
     isRegister ? registerBtn.click() : loginBtn.click();
