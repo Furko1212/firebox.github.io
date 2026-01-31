@@ -7,50 +7,70 @@
 
 <style>
 *{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#050505;color:white}
+body{
+  margin:0;
+  background:#000;
+  color:white;
+  overflow:hidden;
+}
 
-/* LANDING */
+/* ====== LANDING ====== */
 #landing{
   height:100vh;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
-  background:#050505;
+  background:#000;
 }
-#landing img{
-  width:260px;
-  margin-bottom:30px;
+
+#logo{
+  width:300px;
+  animation: rgbGlow 4s infinite;
 }
-#enterBtn{
-  background:#ff8c00;
-  color:black;
-  padding:14px 40px;
-  border:none;
+
+@keyframes rgbGlow{
+  0%{filter:drop-shadow(0 0 25px red)}
+  33%{filter:drop-shadow(0 0 25px lime)}
+  66%{filter:drop-shadow(0 0 25px cyan)}
+  100%{filter:drop-shadow(0 0 25px red)}
+}
+
+#enter{
+  margin-top:40px;
+  padding:14px 50px;
   font-size:18px;
   font-weight:bold;
-  border-radius:8px;
+  background:#ff8c00;
+  color:black;
+  border:none;
+  border-radius:10px;
   cursor:pointer;
 }
-#enterBtn:hover{opacity:.9}
+#enter:hover{opacity:.9}
 
-/* AUTH */
-#authBox{
+/* ====== AUTH ====== */
+#auth{
   display:none;
   height:100vh;
   justify-content:center;
   align-items:center;
+  background:#000;
 }
-.auth-card{
-  background:#0e0e0e;
+
+.card{
+  background:#0b0b0b;
   border:2px solid #ff8c00;
+  border-radius:15px;
   padding:30px;
   width:320px;
-  border-radius:14px;
   text-align:center;
+  box-shadow:0 0 25px rgba(255,140,0,.3);
 }
-.auth-card h2{color:#ff8c00}
-.auth-card input{
+
+.card h2{color:#ff8c00}
+
+.card input{
   width:100%;
   padding:12px;
   margin:8px 0;
@@ -59,34 +79,32 @@ body{margin:0;background:#050505;color:white}
   color:white;
   border-radius:6px;
 }
-.auth-card button{
+
+.card button{
   width:100%;
   padding:12px;
   margin-top:10px;
   background:#ff8c00;
   color:black;
-  font-weight:bold;
   border:none;
   border-radius:6px;
+  font-weight:bold;
   cursor:pointer;
 }
+
 .switch{
-  margin-top:10px;
+  margin-top:12px;
   color:#ffb347;
   cursor:pointer;
 }
 
-/* SITE */
-#site{
-  display:none;
-}
+/* ====== SITE ====== */
+#site{display:none}
 header{
-  background:black;
-  border-bottom:2px solid #ff8c00;
   padding:15px;
+  border-bottom:2px solid #ff8c00;
   display:flex;
   justify-content:space-between;
-  align-items:center;
 }
 .logout{
   background:#ff8c00;
@@ -96,7 +114,6 @@ header{
   font-weight:bold;
   cursor:pointer;
 }
-main{padding:40px}
 </style>
 </head>
 
@@ -104,31 +121,27 @@ main{padding:40px}
 
 <!-- LANDING -->
 <div id="landing">
-  <!-- LOGO -->
-  <img src="firebox.png" alt="Firebox Logo">
-  <button id="enterBtn">ENTER</button>
+  <img id="logo" src="logo.png">
+  <button id="enter">ENTER</button>
 </div>
 
 <!-- AUTH -->
-<div id="authBox">
-  <div class="auth-card">
+<div id="auth">
+  <div class="card">
     <h2 id="title">Giriş Yap</h2>
     <input id="email" type="email" placeholder="Email">
     <input id="password" type="password" placeholder="Şifre">
-    <button id="actionBtn">Giriş Yap</button>
-    <div class="switch" id="switchMode">Hesabın yok mu? Kayıt ol</div>
+    <button id="action">Giriş Yap</button>
+    <div class="switch" id="switch">Hesabın yok mu? Kayıt ol</div>
   </div>
 </div>
 
 <!-- SITE -->
 <div id="site">
   <header>
-    <h3>Firebox</h3>
-    <button class="logout" id="logoutBtn">Çıkış</button>
+    <b>Firebox</b>
+    <button class="logout" id="logout">Çıkış</button>
   </header>
-  <main>
-    <!-- BURAYA SİTENİN ASIL İÇERİĞİ GELECEK -->
-  </main>
 </div>
 
 <script type="module">
@@ -138,48 +151,38 @@ import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, on
 const firebaseConfig={
   apiKey:"AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
   authDomain:"firebox-e62b3.firebaseapp.com",
-  projectId:"firebox-e62b3",
-  storageBucket:"firebox-e62b3.firebasestorage.app",
-  messagingSenderId:"1063315808941",
-  appId:"1:1063315808941:web:30eff721cf4a01e7945c24"
+  projectId:"firebox-e62b3"
 };
 
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 
 const landing=document.getElementById("landing");
-const authBox=document.getElementById("authBox");
+const authBox=document.getElementById("auth");
 const site=document.getElementById("site");
 
-document.getElementById("enterBtn").onclick=()=>{
+enter.onclick=()=>{
   landing.style.display="none";
   authBox.style.display="flex";
 };
 
-let isLogin=true;
-const title=document.getElementById("title");
-const actionBtn=document.getElementById("actionBtn");
-const switchMode=document.getElementById("switchMode");
-
-switchMode.onclick=()=>{
-  isLogin=!isLogin;
-  title.innerText=isLogin?"Giriş Yap":"Kayıt Ol";
-  actionBtn.innerText=isLogin?"Giriş Yap":"Kayıt Ol";
-  switchMode.innerText=isLogin?"Hesabın yok mu? Kayıt ol":"Zaten hesabın var mı? Giriş yap";
+let login=true;
+switch.onclick=()=>{
+  login=!login;
+  title.innerText=login?"Giriş Yap":"Kayıt Ol";
+  action.innerText=login?"Giriş Yap":"Kayıt Ol";
+  switch.innerText=login?"Hesabın yok mu? Kayıt ol":"Zaten hesabın var mı? Giriş yap";
 };
 
-function authAction(){
-  const email=document.getElementById("email").value;
-  const password=document.getElementById("password").value;
-  if(!email||!password)return alert("Boş bırakma");
+action.onclick=()=>{
+  const e=email.value,p=password.value;
+  if(login) signInWithEmailAndPassword(auth,e,p);
+  else createUserWithEmailAndPassword(auth,e,p);
+};
 
-  isLogin
-  ? signInWithEmailAndPassword(auth,email,password)
-  : createUserWithEmailAndPassword(auth,email,password);
-}
-
-actionBtn.onclick=authAction;
-document.addEventListener("keydown",e=>{if(e.key==="Enter")authAction()});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Enter" && authBox.style.display==="flex") action.click();
+});
 
 onAuthStateChanged(auth,user=>{
   if(user){
@@ -190,4 +193,8 @@ onAuthStateChanged(auth,user=>{
   }
 });
 
-document.getElementById("logoutBtn").onclick=()=
+logout.onclick=()=>signOut(auth);
+</script>
+
+</body>
+</html>
