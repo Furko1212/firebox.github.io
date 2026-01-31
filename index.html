@@ -2,37 +2,30 @@
 <html lang="tr">
 <head>
     <meta charset="utf-8">
+    <title>FireboxMC</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- FAVICON -->
-    <link rel="icon" type="image/png" href="/firebox.github.io/img/icon.png?v=5">
-    <link rel="shortcut icon" type="image/png" href="/firebox.github.io/img/icon.png?v=5">
-
-    <title>FireboxMC</title>
-
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/animate.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="color/default.css" rel="stylesheet">
-
-    <!-- 🔐 Firebase -->
+    <!-- 🔐 FIREBASE AUTH KONTROL (EN ÜSTE) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
     <script>
-    const firebaseConfig = {
+    firebase.initializeApp({
       apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
       authDomain: "firebox-e62b3.firebaseapp.com",
-      projectId: "firebox-e62b3",
-      storageBucket: "firebox-e62b3.firebasestorage.app",
-      messagingSenderId: "1063315808941",
-      appId: "1:1063315808941:web:30eff721cf4a01e7945c24"
-    };
+      projectId: "firebox-e62b3"
+    });
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
+    firebase.auth().onAuthStateChanged(user=>{
+      if(!user || !user.emailVerified){
+        window.location.href="index.html";
+      }
+    });
     </script>
+
+    <!-- CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
     <style>
         .skin-circle {
@@ -42,158 +35,79 @@
             background: #111;
             padding: 6px;
         }
-
-        /* LOGIN PANEL */
-        #login-box {
-            max-width: 400px;
-            margin: 40px auto;
-            background: rgba(0,0,0,0.75);
-            padding: 25px;
-            border-radius: 15px;
-            color: #fff;
-        }
-        #login-box input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            border: none;
-        }
-        #login-box button {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            background: #ff3333;
-            border: none;
-            color: #fff;
-            border-radius: 6px;
-        }
     </style>
 </head>
 
 <body id="page-top">
 
-<nav class="navbar navbar-custom navbar-fixed-top">
+<nav class="navbar navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#intro">
-            <h1>
-                <span style="color:#ffaa00;">Fire</span><span style="color:#ff3333;">box</span>
-                - IP : play.fireboxx.xyz
-            </h1>
-        </a>
+        <span class="navbar-brand">
+            🔥 <span style="color:#ffaa00;">Fire</span><span style="color:#ff3333;">box</span>
+        </span>
 
-        <ul class="nav navbar-nav navbar-right">
-            <li><a href="#intro">Ana Sayfa</a></li>
-            <li><a href="#about">Hakkımızda</a></li>
-            <li><a href="#service">Özellikler</a></li>
-            <li><a href="#login">Giriş</a></li>
-            <li><a href="#contact">İletişim</a></li>
-        </ul>
+        <button onclick="logout()" class="btn btn-danger btn-sm">
+            Çıkış Yap
+        </button>
     </div>
 </nav>
 
-<section id="intro" class="intro"
-style="
+<!-- INTRO -->
+<section style="
+height:90vh;
 background:
 linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
 url(img/firebox-bg.jpg) no-repeat center center;
-background-size: cover;
+background-size:cover;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:white;
 ">
-    <div class="slogan text-center">
-        <h2>
-            <span style="color:#ffaa00;">Fire</span><span style="color:#ff3333;">box</span> Hoşgeldin
-        </h2>
-        <h4>Sunucu Adresi : play.fireboxx.xyz</h4>
+    <div>
+        <h1>
+            <span style="color:#ffaa00;">Fire</span><span style="color:#ff3333;">box</span>MC
+        </h1>
+        <h4>IP: play.fireboxx.xyz</h4>
     </div>
 </section>
 
-<!-- 🔐 LOGIN -->
-<section id="login" class="home-section text-center">
-    <div class="container">
-        <div id="login-box">
-            <h3>Giriş / Kayıt</h3>
+<!-- ABOUT -->
+<section class="container text-center" style="padding:60px 0">
+    <h2>Hakkımızda</h2>
+    <p>Türkiye’nin En İyi BoxMining Sunucusu</p>
 
-            <input id="email" type="email" placeholder="Email">
-            <input id="password" type="password" placeholder="Şifre">
+    <div class="row">
+        <div class="col-md-4">
+            <img src="img/team/sa.png" class="skin-circle">
+            <h4>Furko1212</h4>
+            <p>Kurucu</p>
+        </div>
 
-            <button onclick="login()">Giriş Yap</button>
-            <button onclick="register()">Kayıt Ol</button>
+        <div class="col-md-4">
+            <img src="img/team/as.png" class="skin-circle">
+            <h4>kloroplastmetali</h4>
+            <p>Kurucu</p>
+        </div>
+
+        <div class="col-md-4">
+            <img src="img/team/ali.png" class="skin-circle">
+            <h4>DroppedByMoney</h4>
+            <p>Moderatör</p>
         </div>
     </div>
 </section>
 
-<section id="about" class="home-section text-center">
-    <div class="container">
-        <h2>Hakkımızda</h2>
-        <p>Türkiyenin En İyi Boxmining Deneyimini Yaşatan Sunucu</p>
-
-        <div class="row">
-            <div class="col-md-4">
-                <img src="img/team/sa.png" class="skin-circle">
-                <h4>Furko1212</h4>
-                <p>Kurucu</p>
-            </div>
-
-            <div class="col-md-4">
-                <img src="img/team/as.png" class="skin-circle">
-                <h4>kloroplastmetali</h4>
-                <p>Kurucu</p>
-            </div>
-
-            <div class="col-md-4">
-                <img src="img/team/ali.png" class="skin-circle">
-                <h4>DroppedByMoney</h4>
-                <p>Moderatör</p>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="service" class="home-section text-center bg-gray">
-    <div class="container">
-        <h2>Özellikler</h2>
-
-        <div class="row">
-            <div class="col-md-3"><h4>Harita</h4><p>Özel box yapıları</p></div>
-            <div class="col-md-3"><h4>Etkinlik</h4><p>Günlük event</p></div>
-            <div class="col-md-3"><h4>Pixeller</h4><p>Eğlenceli deneyim</p></div>
-            <div class="col-md-3"><h4>Market</h4><p>Yakında</p></div>
-        </div>
-    </div>
-</section>
-
-<section id="contact" class="home-section text-center">
-    <div class="container">
-        <h2>İletişim</h2>
-        <p>E-Posta: yasintamtak@gmail.com</p>
-        <p>IP: play.fireboxx.xyz</p>
-    </div>
-</section>
-
-<footer class="text-center">
-    <p>© FireboxMC - Tüm Hakları Saklıdır</p>
+<footer class="text-center" style="background:#111;color:#aaa;padding:20px">
+    © FireboxMC
 </footer>
 
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-
 <script>
-function login(){
-  auth.signInWithEmailAndPassword(
-    email.value,
-    password.value
-  ).then(() => {
-    alert("Giriş başarılı 🎉");
-  }).catch(err => alert(err.message));
-}
-
-function register(){
-  auth.createUserWithEmailAndPassword(
-    email.value,
-    password.value
-  ).then(() => {
-    alert("Kayıt başarılı ✅");
-  }).catch(err => alert(err.message));
+function logout(){
+    firebase.auth().signOut().then(()=>{
+        window.location.href="index.html";
+    });
 }
 </script>
 
