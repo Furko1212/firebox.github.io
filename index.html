@@ -2,7 +2,8 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<title>FireboxMC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FireboxMC | Giriş</title>
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -10,84 +11,68 @@
 
 <script>
 firebase.initializeApp({
-  apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
-  authDomain: "firebox-e62b3.firebaseapp.com"
+  apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgkDve7EXoLlLbuE",
+  authDomain: "firebox-e62b3.firebaseapp.com",
+  projectId: "firebox-e62b3"
 });
 const auth = firebase.auth();
 </script>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
-
+*{box-sizing:border-box}
 body{
-  background:#000;
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:radial-gradient(circle at top,#1a1a1a,#000);
   height:100vh;
   display:flex;
   align-items:center;
   justify-content:center;
-  color:#fff;
+  color:white;
 }
 
-/* ENTER EKRANI */
-#enter{
+#login-box{
+  width:380px;
+  background:#0b0b0b;
+  padding:32px;
+  border-radius:18px;
+  box-shadow:0 0 35px rgba(255,140,0,0.35);
+}
+
+.logo{
   text-align:center;
+  margin-bottom:18px;
+}
+.logo img{
+  width:140px;
+  filter:drop-shadow(0 0 25px orange);
 }
 
-#enter img{
-  width:200px;
-  filter:drop-shadow(0 0 30px orange);
-  margin-bottom:30px;
-}
-
-#enter button{
-  padding:14px 60px;
-  font-size:18px;
-  background:#ff8c00;
-  border:none;
-  border-radius:12px;
-  cursor:pointer;
-  box-shadow:0 0 25px orange;
-}
-
-/* LOGIN */
-#login{
-  display:none;
-  width:360px;
-  background:#111;
-  padding:30px;
-  border-radius:15px;
-  box-shadow:0 0 30px #000;
-}
-
-#login h2{
-  text-align:center;
-  margin-bottom:20px;
-}
-
-#login input{
+input{
   width:100%;
   padding:12px;
   margin-bottom:12px;
-  background:#1e1e1e;
   border:none;
   border-radius:8px;
-  color:#fff;
+  background:#1e1e1e;
+  color:white;
+  font-size:15px;
 }
+input::placeholder{color:#aaa}
 
-#login button{
+button{
   width:100%;
   padding:12px;
-  background:#ff8c00;
+  background:linear-gradient(135deg,#ff8c00,#ff3300);
   border:none;
   border-radius:8px;
+  color:white;
   font-size:16px;
+  font-weight:bold;
   cursor:pointer;
 }
-
-#error{
-  color:#ff5555;
-  text-align:center;
-  margin-bottom:10px;
+button:hover{
+  background:linear-gradient(135deg,#ffaa00,#ff5500);
 }
 
 .switch{
@@ -96,79 +81,83 @@ body{
   color:#aaa;
   cursor:pointer;
 }
+.switch:hover{color:white}
+
+#error{
+  color:#ff6666;
+  text-align:center;
+  margin-bottom:10px;
+}
 </style>
 </head>
 
 <body>
 
-<!-- ENTER -->
-<div id="enter">
-  <img src="img/logo.png">
-  <br>
-  <button onclick="showLogin()">ENTER</button>
-</div>
+<div id="login-box">
+  <div class="logo">
+    <img src="img/logo.png" alt="Firebox Logo">
+  </div>
 
-<!-- LOGIN -->
-<div id="login">
-  <h2>FireboxMC</h2>
   <div id="error"></div>
 
   <input id="email" type="email" placeholder="Email">
-  <input id="pass" type="password" placeholder="Şifre">
-  <input id="pass2" type="password" placeholder="Şifre (Tekrar)" style="display:none">
+  <input id="password" type="password" placeholder="Şifre">
+  <input id="password2" type="password" placeholder="Şifre (Tekrar)" style="display:none">
 
-  <button id="loginBtn" onclick="login()">Giriş Yap</button>
-  <button id="regBtn" onclick="register()" style="display:none">Kayıt Ol</button>
+  <button id="loginBtn">Giriş Yap</button>
+  <button id="registerBtn" style="display:none">Kayıt Ol</button>
 
-  <div class="switch" onclick="toggle()">Hesabın yok mu? Kayıt ol</div>
+  <div class="switch" id="switchBtn">Hesabın yok mu? Kayıt ol</div>
 </div>
 
 <script>
-let reg=false;
+let isRegister=false;
 
-function showLogin(){
-  enter.style.display="none";
-  login.style.display="block";
-}
+/* Switch */
+switchBtn.onclick=()=>{
+  isRegister=!isRegister;
+  password2.style.display=isRegister?"block":"none";
+  loginBtn.style.display=isRegister?"none":"block";
+  registerBtn.style.display=isRegister?"block":"none";
+  switchBtn.innerText=isRegister
+    ?"Zaten hesabın var mı? Giriş yap"
+    :"Hesabın yok mu? Kayıt ol";
+  error.innerText="";
+};
 
-function toggle(){
-  reg=!reg;
-  pass2.style.display = reg ? "block":"none";
-  loginBtn.style.display = reg ? "none":"block";
-  regBtn.style.display = reg ? "block":"none";
-}
-
-function register(){
-  if(pass.value!==pass2.value){
+/* Register */
+registerBtn.onclick=()=>{
+  if(password.value!==password2.value){
     error.innerText="Şifreler uyuşmuyor";
     return;
   }
-  auth.createUserWithEmailAndPassword(email.value,pass.value)
+  auth.createUserWithEmailAndPassword(email.value,password.value)
   .then(u=>{
     u.user.sendEmailVerification();
-    alert("Mail gönderildi");
+    alert("Mail doğrulama gönderildi 📧");
     auth.signOut();
   })
   .catch(e=>error.innerText=e.message);
-}
+};
 
-function login(){
-  auth.signInWithEmailAndPassword(email.value,pass.value)
+/* Login */
+loginBtn.onclick=()=>{
+  auth.signInWithEmailAndPassword(email.value,password.value)
   .then(u=>{
     if(!u.user.emailVerified){
       error.innerText="Email doğrulanmamış";
       auth.signOut();
     }else{
-      alert("Giriş başarılı");
+      window.location.href="site.html";
     }
   })
-  .catch(()=>error.innerText="Hatalı giriş");
-}
+  .catch(()=>error.innerText="Email veya şifre hatalı");
+};
 
+/* Enter tuşu */
 document.addEventListener("keydown",e=>{
   if(e.key==="Enter"){
-    if(enter.style.display!=="none") showLogin();
-    else login();
+    isRegister ? registerBtn.click() : loginBtn.click();
   }
 });
 </script>
