@@ -4,13 +4,20 @@
 <meta charset="UTF-8">
 <title>FireboxMC</title>
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+firebase.initializeApp({
+  apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
+  authDomain: "firebox-e62b3.firebaseapp.com"
+});
+const auth = firebase.auth();
+</script>
+
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:Arial, sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial}
 
 body{
   background:#000;
@@ -18,50 +25,151 @@ body{
   display:flex;
   align-items:center;
   justify-content:center;
+  color:#fff;
 }
 
-.container{
+/* ENTER EKRANI */
+#enter{
   text-align:center;
 }
 
-.logo{
-  width:180px;
-  margin-bottom:40px;
-  filter: drop-shadow(0 0 25px orange);
+#enter img{
+  width:200px;
+  filter:drop-shadow(0 0 30px orange);
+  margin-bottom:30px;
 }
 
-.enter-btn{
-  background:#ff8c00;
-  color:#000;
-  border:none;
-  padding:14px 50px;
+#enter button{
+  padding:14px 60px;
   font-size:18px;
+  background:#ff8c00;
+  border:none;
   border-radius:12px;
   cursor:pointer;
-  box-shadow:0 0 25px rgba(255,140,0,.8);
+  box-shadow:0 0 25px orange;
 }
 
-.enter-btn:hover{
-  background:#ffa733;
+/* LOGIN */
+#login{
+  display:none;
+  width:360px;
+  background:#111;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 0 30px #000;
+}
+
+#login h2{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+#login input{
+  width:100%;
+  padding:12px;
+  margin-bottom:12px;
+  background:#1e1e1e;
+  border:none;
+  border-radius:8px;
+  color:#fff;
+}
+
+#login button{
+  width:100%;
+  padding:12px;
+  background:#ff8c00;
+  border:none;
+  border-radius:8px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+#error{
+  color:#ff5555;
+  text-align:center;
+  margin-bottom:10px;
+}
+
+.switch{
+  text-align:center;
+  margin-top:10px;
+  color:#aaa;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container">
-  <img src="img/logo.png" class="logo">
+<!-- ENTER -->
+<div id="enter">
+  <img src="img/logo.png">
   <br>
-  <button class="enter-btn" onclick="go()">ENTER</button>
+  <button onclick="showLogin()">ENTER</button>
+</div>
+
+<!-- LOGIN -->
+<div id="login">
+  <h2>FireboxMC</h2>
+  <div id="error"></div>
+
+  <input id="email" type="email" placeholder="Email">
+  <input id="pass" type="password" placeholder="Şifre">
+  <input id="pass2" type="password" placeholder="Şifre (Tekrar)" style="display:none">
+
+  <button id="loginBtn" onclick="login()">Giriş Yap</button>
+  <button id="regBtn" onclick="register()" style="display:none">Kayıt Ol</button>
+
+  <div class="switch" onclick="toggle()">Hesabın yok mu? Kayıt ol</div>
 </div>
 
 <script>
-function go(){
-  window.location.href = "login.html";
+let reg=false;
+
+function showLogin(){
+  enter.style.display="none";
+  login.style.display="block";
+}
+
+function toggle(){
+  reg=!reg;
+  pass2.style.display = reg ? "block":"none";
+  loginBtn.style.display = reg ? "none":"block";
+  regBtn.style.display = reg ? "block":"none";
+}
+
+function register(){
+  if(pass.value!==pass2.value){
+    error.innerText="Şifreler uyuşmuyor";
+    return;
+  }
+  auth.createUserWithEmailAndPassword(email.value,pass.value)
+  .then(u=>{
+    u.user.sendEmailVerification();
+    alert("Mail gönderildi");
+    auth.signOut();
+  })
+  .catch(e=>error.innerText=e.message);
+}
+
+function login(){
+  auth.signInWithEmailAndPassword(email.value,pass.value)
+  .then(u=>{
+    if(!u.user.emailVerified){
+      error.innerText="Email doğrulanmamış";
+      auth.signOut();
+    }else{
+      alert("Giriş başarılı");
+    }
+  })
+  .catch(()=>error.innerText="Hatalı giriş");
 }
 
 document.addEventListener("keydown",e=>{
-  if(e.key==="Enter") go();
+  if(e.key==="Enter"){
+    if(enter.style.display!=="none") showLogin();
+    else login();
+  }
 });
 </script>
 
