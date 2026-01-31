@@ -2,138 +2,202 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
+<title>Firebox</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FireboxMC | Giriş</title>
-
-<!-- Firebase (IMPORT YOK, COMPAT VAR) -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <style>
-body{
-    margin:0;
-    height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
-    font-family:Arial,Helvetica,sans-serif;
-    color:#fff;
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
-#box{
-    width:380px;
-    background:#111;
-    padding:30px;
-    border-radius:14px;
-    box-shadow:0 0 30px rgba(0,0,0,.8);
+
+body {
+  margin: 0;
+  background: #0b0b0b;
+  color: white;
 }
-h2{text-align:center;margin-bottom:20px}
-input{
-    width:100%;
-    padding:12px;
-    margin-bottom:12px;
-    border:none;
-    border-radius:8px;
-    background:#1f1f1f;
-    color:#fff;
+
+/* LOGIN */
+#authBox {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-button{
-    width:100%;
-    padding:12px;
-    border:none;
-    border-radius:8px;
-    background:#ff7a00;
-    color:#000;
-    font-size:16px;
-    cursor:pointer;
+
+.auth-card {
+  background: #111;
+  border: 2px solid #ff8c00;
+  padding: 30px;
+  width: 320px;
+  border-radius: 12px;
+  text-align: center;
 }
-button:hover{background:#ffa133}
-.switch{
-    text-align:center;
-    margin-top:10px;
-    color:#aaa;
-    cursor:pointer;
+
+.auth-card h2 {
+  color: #ff8c00;
 }
-#error{
-    text-align:center;
-    color:#ff5555;
-    margin-bottom:10px;
+
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  background: #000;
+  border: 1px solid #ff8c00;
+  color: white;
+  border-radius: 6px;
+}
+
+.auth-card button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background: #ff8c00;
+  color: black;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.auth-card button:hover {
+  opacity: 0.9;
+}
+
+.switch {
+  margin-top: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  color: #ffb347;
+}
+
+/* SITE */
+#site {
+  display: none;
+}
+
+header {
+  background: black;
+  border-bottom: 2px solid #ff8c00;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logout {
+  background: #ff8c00;
+  color: black;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+main {
+  padding: 30px;
 }
 </style>
 </head>
 
 <body>
 
-<div id="box">
-    <h2>🔥 FireboxMC</h2>
-    <div id="error"></div>
+<!-- LOGIN -->
+<div id="authBox">
+  <div class="auth-card">
+    <h2 id="title">Giriş Yap</h2>
 
     <input id="email" type="email" placeholder="Email">
     <input id="password" type="password" placeholder="Şifre">
-    <input id="password2" type="password" placeholder="Şifre (Tekrar)" style="display:none">
 
-    <button id="loginBtn">Giriş Yap</button>
-    <button id="registerBtn" style="display:none">Kayıt Ol</button>
+    <button id="actionBtn">Giriş Yap</button>
 
-    <div class="switch" id="switchBtn">Hesabın yok mu? Kayıt ol</div>
+    <div class="switch" id="switchMode">
+      Hesabın yok mu? Kayıt ol
+    </div>
+  </div>
 </div>
 
-<script>
-/* FIREBASE CONFIG — SENİN ATTIKLARIN */
-firebase.initializeApp({
+<!-- SITE -->
+<div id="site">
+  <header>
+    <h3>🔥 Firebox Panel</h3>
+    <button class="logout" id="logoutBtn">Çıkış Yap</button>
+  </header>
+
+  <main>
+    <h1>Hoş geldin knk 👋</h1>
+    <p>Burası ana site. Login olmadan girilemez.</p>
+  </main>
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+const firebaseConfig = {
   apiKey: "AIzaSyBsjuMnS6RiFPlfA4CgqkDve7EXoLlLbuE",
   authDomain: "firebox-e62b3.firebaseapp.com",
   projectId: "firebox-e62b3",
   storageBucket: "firebox-e62b3.firebasestorage.app",
   messagingSenderId: "1063315808941",
-  appId: "1:1063315808941:web:30eff721cf4a01e7945c24"
+  appId: "1:1063315808941:web:30eff721cf4a01e7945c24",
+  measurementId: "G-ZKH1QJC3N2"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const authBox = document.getElementById("authBox");
+const site = document.getElementById("site");
+const actionBtn = document.getElementById("actionBtn");
+const switchMode = document.getElementById("switchMode");
+const title = document.getElementById("title");
+
+let isLogin = true;
+
+switchMode.onclick = () => {
+  isLogin = !isLogin;
+  title.innerText = isLogin ? "Giriş Yap" : "Kayıt Ol";
+  actionBtn.innerText = isLogin ? "Giriş Yap" : "Kayıt Ol";
+  switchMode.innerText = isLogin ? "Hesabın yok mu? Kayıt ol" : "Zaten hesabın var mı? Giriş yap";
+};
+
+actionBtn.onclick = authAction;
+
+document.addEventListener("keydown", e => {
+  if (e.key === "Enter") authAction();
 });
 
-const auth = firebase.auth();
+function authAction() {
+  const email = email.value;
+  const password = password.value;
 
-let registerMode = false;
+  if (!email || !password) return alert("Boş bırakma knk");
 
-switchBtn.onclick = () => {
-    registerMode = !registerMode;
-    password2.style.display = registerMode ? "block" : "none";
-    loginBtn.style.display = registerMode ? "none" : "block";
-    registerBtn.style.display = registerMode ? "block" : "none";
-    switchBtn.innerText = registerMode
-        ? "Zaten hesabın var mı? Giriş yap"
-        : "Hesabın yok mu? Kayıt ol";
-    error.innerText = "";
-};
-
-registerBtn.onclick = () => {
-    if(password.value !== password2.value){
-        error.innerText = "Şifreler uyuşmuyor!";
-        return;
-    }
-    auth.createUserWithEmailAndPassword(email.value,password.value)
-    .then(u=>{
-        u.user.sendEmailVerification();
-        alert("Doğrulama maili gönderildi 📧");
-        auth.signOut();
-    })
-    .catch(e=>error.innerText = e.message);
-};
-
-loginBtn.onclick = () => {
-    auth.signInWithEmailAndPassword(email.value,password.value)
-    .then(u=>{
-        if(!u.user.emailVerified){
-            error.innerText = "Email doğrulanmamış!";
-            auth.signOut();
-        }else{
-            document.body.innerHTML = "<h1>✅ Giriş başarılı</h1><button onclick='logout()'>Çıkış Yap</button>";
-        }
-    })
-    .catch(()=>error.innerText="Email veya şifre hatalı");
-};
-
-function logout(){
-    auth.signOut().then(()=>location.reload());
+  if (isLogin) {
+    signInWithEmailAndPassword(auth, email, password)
+      .catch(err => alert(err.message));
+  } else {
+    createUserWithEmailAndPassword(auth, email, password)
+      .catch(err => alert(err.message));
+  }
 }
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    authBox.style.display = "none";
+    site.style.display = "block";
+  } else {
+    authBox.style.display = "flex";
+    site.style.display = "none";
+  }
+});
+
+document.getElementById("logoutBtn").onclick = () => {
+  signOut(auth);
+};
 </script>
 
 </body>
